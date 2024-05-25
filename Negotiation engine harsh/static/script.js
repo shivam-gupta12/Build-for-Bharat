@@ -25,6 +25,10 @@ document.querySelector('.send-button').addEventListener('click', function() {
       input.value = ''; // Clear the input field
     }
 });
+
+
+
+
   
   
 
