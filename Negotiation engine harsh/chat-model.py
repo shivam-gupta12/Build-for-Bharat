@@ -605,11 +605,16 @@ from flask import Flask, render_template, request, session, redirect, url_for, c
 from flask_socketio import join_room, leave_room, send, SocketIO
 import random
 import torch
+import json
+from flask_socketio import emit
 import markdown
 from transformers import BertTokenizer, BertForSequenceClassification
 import google.generativeai as genai 
 import string
 from threading import Thread
+from flask import jsonify
+import re
+
 
 print('app starting')
 
@@ -670,7 +675,6 @@ def room():
         return redirect(url_for("home"))
 
     return render_template("room.html", code=room, messages=rooms[room]["messages"])
-
 
 certainty_model_path = 'Negotiation engine harsh/models/certainty_prediction_model'
 certainty_model = BertForSequenceClassification.from_pretrained(certainty_model_path)
@@ -903,7 +907,60 @@ def generate_middle_ground(user_messages, room):
         send({"name": "System", "message": formatted_response, "messageType": "middle-ground"}, to=room, html=True)
     else:
         print('not enough information')
+        
+def find_json_string(raw_string):
+    # This regex pattern attempts to find the most extended string that starts with '{' and ends with '}'.
+    # It's somewhat simplified and assumes that the JSON does not contain any strings with unescaped '}' characters.
+    pattern = r'\{.*\}'
+    match = re.search(pattern, raw_string, re.DOTALL)
+    if match:
+        return match.group(0)  # Return the matched JSON string
+    return None  # If no match is found, return None
 
+def summarize(user_messages, room):
+    conversation_context = " ".join(user_messages[:-1]) if len(user_messages) > 1 else "The conversation has focused primarily on price negotiations."
+    non_negotiable_statement = user_messages[-1]
+    
+    genai.configure(api_key="AIzaSyCHhvLttGJJynPDImQ3NGkxb4d7PTD4hKI")
+    model = genai.GenerativeModel('gemini-pro')
+
+    prompt = f"""
+    Analyse the messages from both buyer and seller parties and determine the status of the negotiation which can either of the three i.e accepted, rejected or no decision made. Also summarize the conversation in a brief way to determine actual conclusion.
+
+    Previous negotiation context:
+    {conversation_context}
+
+    Most recent, non-negotiable statement:
+    {non_negotiable_statement}
+
+    Task:
+        1. Determine the buyer and seller messages from all messages and analyse them to gain understanding of the negotiation.
+        2. After you have analysed all the messages from both sides, determine the status of the negotiation which can either of the three i.e accepted, rejected or no decision made. 
+        3. Now summarize the entire conversation in a brief way to find out the actual conclusion of the negotiation between both parties.
+        4. Give your output only in the given JSON format :
+            {{
+                "status" : "status of the conversation (accepted, rejected or no decision made)",
+                "summary" : "conclusion of the conversation"
+            }}
+    """
+
+    generation_config = {
+        "max_output_tokens": 216,
+        "temperature": 0.3
+    }
+    
+    try:
+        response = model.generate_content(prompt, generation_config=generation_config)
+        summary_whole = response.text
+        summary_whole = find_json_string(summary_whole)
+        print(summary_whole, type(summary_whole))
+        summary_whole = json.loads(summary_whole)
+        print(type(summary_whole))
+        print(summary_whole)
+        emit('summary_result', {"name": "System", "message": {"status": summary_whole["status"], "summary": summary_whole["summary"]}, "messageType": "status and summary"}, room=room)
+    except Exception as e:
+        emit('summary_error', {"error": str(e)}, room=room)
+    
 def format_response_as_html(text):
     """
     Converts a structured text response into HTML with left-aligned text for better readability.
@@ -970,6 +1027,17 @@ def disconnect():
     
     send({"name": name, "message": "has left the room"}, to=room)
     print(f"{name} has left the room {room}")
+    
+@socketio.on("end_conversation")
+def end_conversation():
+    room = session.get("room")
+    if room in rooms:
+        try:
+            all_messages = sum(rooms[room]["messages_by_user"].values(), [])
+            summarize(all_messages, room)  # the summarize function now handles SocketIO emissions
+        except Exception as e:
+            print("Error summarizing messages:", str(e))
+            emit('summary_error', {"error": str(e)}, room=room)
 
 if __name__ == "__main__":
-    socketio.run(app,port=8080)
+    socketio.run(app,port=8080, debug=True)

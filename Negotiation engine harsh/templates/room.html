@@ -807,7 +807,7 @@
     <nav>
   </div>
   </div> -->
-  <!-- <script type="text/javascript">
+<!-- <script type="text/javascript">
     console.log("running js of room.html")
     var socketio = io();
 
@@ -998,10 +998,10 @@ const sendMessage = () => {
   <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js"
     integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA=="
     crossorigin="anonymous"></script>
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-icons/1.7.2/font/bootstrap-icons.min.css"
+    rel="stylesheet">
 
   <style>
-
     .page {
       display: flex;
       flex-direction: row;
@@ -1009,133 +1009,147 @@ const sendMessage = () => {
       padding: 0;
     }
 
-    body, html {
-  height: 100%;
-  margin: 0;
-  font-family: 'Arial', sans-serif;
-  background-color: #333333; /* Dark background for the whole page */
-  color: white; /* Light text for the whole page */
-}
+    body,
+    html {
+      height: 100%;
+      margin: 0;
+      font-family: 'Arial', sans-serif;
+      background-color: #333333;
+      /* Dark background for the whole page */
+      color: white;
+      /* Light text for the whole page */
+    }
 
-/* Styling for the assistant sidebar */
-.assistant {
-  background-color: #2A2C31; /* Dark background for the assistant section */
-  color: white;
-  padding: 20px;
-  display: flex;
-  flex-direction: column;
-  width: 40%; /* Adjust the width as per your design */
-  height: 100vh;
-  box-sizing: border-box; /* Include padding in the width */
-}
+    /* Styling for the assistant sidebar */
+    .assistant {
+      background-color: #2A2C31;
+      /* Dark background for the assistant section */
+      color: white;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      width: 40%;
+      /* Adjust the width as per your design */
+      height: 100vh;
+      box-sizing: border-box;
+      /* Include padding in the width */
+    }
 
-/* Assistant header */
-.assistant-header {
-  font-size: 24px;
-  font-weight: bold;
-  margin-bottom: 30px;
-}
+    /* Assistant header */
+    .assistant-header {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 30px;
+    }
 
-/* Room code section */
-.room-code {
-  font-size: 20px;
-  margin-bottom: 10px;
-}
+    /* Room code section */
+    .room-code {
+      font-size: 20px;
+      margin-bottom: 10px;
+    }
 
-.room-code-value {
-  background-color: #40444B;
-  padding: 10px 15px;
-  border-radius: 5px;
-  font-size: 20px;
-  font-weight: bold;
-  margin-bottom: 30px; /* Space before the message area starts */
-  display: inline-block; /* Makes it not stretch full width */
-}
-.assistant-message-area {
-  height: calc(100vh - 160px); 
-  padding: 20px;
-  border-radius: 10px;
-  overflow-y: auto; 
-  /* margin-top: 20px;  */
-  flex-direction: column;
-}
+    .room-code-value {
+      background-color: #40444B;
+      padding: 10px 15px;
+      border-radius: 5px;
+      font-size: 20px;
+      font-weight: bold;
+      margin-bottom: 30px;
+      /* Space before the message area starts */
+      display: inline-block;
+      /* Makes it not stretch full width */
+    }
 
-.chat-container {
-  flex-grow: 1; 
-  display: flex;
-  flex-direction: column;
-  height: calc(100vh - 160px); 
-  margin: 20px 20px 0 20px; 
-}
+    .assistant-message-area {
+      height: calc(100vh - 160px);
+      padding: 20px;
+      border-radius: 10px;
+      overflow-y: auto;
+      /* margin-top: 20px;  */
+      flex-direction: column;
+    }
 
-body.dark-mode {
-  background-color: #333;
-  color: #FFF; 
-}
+    .chat-container {
+      flex-grow: 1;
+      display: flex;
+      flex-direction: column;
+      height: calc(100vh - 160px);
+      margin: 20px 20px 0 20px;
+    }
 
-body.dark-mode .modal-content {
-  background-color: #2A2C31; 
-  color: #FFF; 
-}
+    body.dark-mode {
+      background-color: #333;
+      color: #FFF;
+    }
 
-body.dark-mode .code-block {
-  background-color: #40444B; 
-  color: #FFF; 
-}
+    body.dark-mode .modal-content {
+      background-color: #2A2C31;
+      color: #FFF;
+    }
 
-body.dark-mode .modal-btn {
-  background-color: #4CAF50; 
-}
+    body.dark-mode .code-block {
+      background-color: #40444B;
+      color: #FFF;
+    }
 
-body.dark-mode .close {
-  color: #CCC; 
-}
+    body.dark-mode .modal-btn {
+      background-color: #4CAF50;
+    }
 
-body.dark-mode .copy-notification {
-  background-color: rgba(255, 255, 255, 0.7); 
-  color: #333; 
-}
+    body.dark-mode .close {
+      color: #CCC;
+    }
 
-#chatbox {
-  flex-grow: 1;
-  overflow-y: auto; 
-  padding: 10px;
-  margin-bottom: 70px;
-}
+    body.dark-mode .copy-notification {
+      background-color: rgba(255, 255, 255, 0.7);
+      color: #333;
+    }
 
-.first-chat-input {
-  position: absolute;
-  bottom: 0; 
-  right: 0;
-  left: 0; 
-  padding: 10px;
-  /* background-color: #333740;  */
-}
+    #chatbox {
+      flex-grow: 1;
+      overflow-y: auto;
+      padding: 10px;
+      margin-bottom: 70px;
+    }
+
+    .first-chat-input {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      left: 0;
+      padding: 10px;
+      /* background-color: #333740;  */
+    }
 
 
-.first-chat-input .input_area {
-  display: flex;
-}
+    .first-chat-input .input_area {
+      display: flex;
+    }
 
-input#message {
-  flex-grow: 1;
-  border-radius: 20px;
-  padding: 10px 20px;
-  margin-right: 10px;
-}
+    input#message {
+      flex-grow: 1;
+      border-radius: 20px;
+      padding: 10px 20px;
+      margin-right: 10px;
+    }
 
-button.send-button {
-  border-radius: 20px;
-  padding: 10px 20px;
-}
+    button.send-button {
+      border-radius: 20px;
+      padding: 10px 20px;
+    }
+
+    button.end-convo {
+      border-radius: 20px;
+      padding: 10px 20px;
+    }
 
 
     .neg-room {
       position: relative;
-  width: 65%; 
-  height: 100vh; 
-  display: flex;
-  flex-direction: column;
+      width: 65%;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
     }
 
     .heading {
@@ -1222,7 +1236,7 @@ button.send-button {
       top: 0;
       transition: .4s;
     }
-    
+
     .slider:before {
       background-color: #ffffff;
       background-image: url("https://static.vecteezy.com/system/resources/previews/019/806/320/non_2x/moon-graphic-clipart-design-free-png.png");
@@ -1302,7 +1316,21 @@ button.send-button {
       cursor: pointer;
     }
 
-    #send-button:hover {
+    .end-convo {
+      padding: 3px 10px;
+      border-radius: 4px;
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      margin-left: 2px;
+    }
+
+    .send-button:hover {
+      background-color: #0056b3;
+    }
+
+    .end-convo:hover {
       background-color: #0056b3;
     }
 
@@ -1312,192 +1340,272 @@ button.send-button {
 
     /* Background Overlay */
     .modal {
-  display: none; /* Hidden by default */
-  position: fixed; /* Stay in place */
-  z-index: 1000; /* Sit on top */
-  left: 0;
-  top: 0;
-  width: 100%; /* Full width */
-  height: 100%; /* Full height */
-  overflow: auto; /* Enable scroll if needed */
-  background-color: rgba(0, 0, 0, 0.4); /* Black background with opacity */
-  animation: fadeIn 0.5s; /* Animation for the overlay */
-}
+      display: none;
+      /* Hidden by default */
+      position: fixed;
+      /* Stay in place */
+      z-index: 1000;
+      /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%;
+      /* Full width */
+      height: 100%;
+      /* Full height */
+      overflow: auto;
+      /* Enable scroll if needed */
+      background-color: rgba(0, 0, 0, 0.4);
+      /* Black background with opacity */
+      animation: fadeIn 0.5s;
+      /* Animation for the overlay */
+    }
 
-.modal-content {
-  background-color: #fefefe;
-  margin: 10% auto;
-  padding: 40px;
-  border-radius: 8px;
-  border: none;
-  width: 50%;
+    .modal-content {
+      background-color: #fefefe;
+      margin: 10% auto;
+      padding: 40px;
+      border-radius: 8px;
+      border: none;
+      width: 50%;
 
-  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
-  text-align: center;
-  position: relative;
-  animation: popIn 0.5s;
-}
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+      text-align: center;
+      position: relative;
+      animation: popIn 0.5s;
+    }
 
-/* Style for individual code blocks */
-.code-container {
-  display: flex;
-  justify-content: center;
-  margin: 20px 0;
-}
+    /* Style for individual code blocks */
+    .code-container {
+      display: flex;
+      justify-content: center;
+      margin: 20px 0;
+    }
 
-.code-block {
-  background-color: #e8e8e8;
-  margin: 0 10px;
-  padding: 10px 15px;
-  border-radius: 5px;
-  display: inline-block;
-  font-size: 1.5em;
-  font-weight: bold;
-}
+    .code-block {
+      background-color: #e8e8e8;
+      margin: 0 10px;
+      padding: 10px 15px;
+      border-radius: 5px;
+      display: inline-block;
+      font-size: 1.5em;
+      font-weight: bold;
+    }
 
-/* General button styling */
-.modal-btn {
-  border: none;
-  padding: 10px 20px;
-  margin-top: 20px;
-  border-radius: 5px;
-  cursor: pointer;
-  font-size: 1em;
-  transition: background-color 0.3s;
-}
+    /* General button styling */
+    .modal-btn {
+      border: none;
+      padding: 10px 20px;
+      margin-top: 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 1em;
+      transition: background-color 0.3s;
+    }
 
-/* Specific styles for copy button */
-#copyButton {
-  background-color: #007bff;
-  color: white;
-}
+    /* Specific styles for copy button */
+    #copyButton {
+      background-color: #007bff;
+      color: white;
+    }
 
-#copyButton:hover {
-  background-color: #0056b3;
-}
+    #copyButton:hover {
+      background-color: #0056b3;
+    }
 
-/* Specific styles for close button */
-.close-btn {
-  background-color: #f44336;
-  color: white;
-}
+    /* Specific styles for close button */
+    .close-btn {
+      background-color: #f44336;
+      color: white;
+    }
 
-.close-btn:hover {
-  background-color: #d32f2f;
-}
+    .close-btn:hover {
+      background-color: #d32f2f;
+    }
 
-.close {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  font-size: 24px;
-  color: #aaa;
-}
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 15px;
+      font-size: 24px;
+      color: #aaa;
+    }
 
-.close:hover {
-  color: #333;
-}
+    #summaryModal {
+      display: none;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0, 0, 0);
+      background-color: rgba(0, 0, 0, 0.4);
+    }
 
-@keyframes fadeIn {
-  from {opacity: 0;}
-  to {opacity: 1;}
-}
+    .modal-content-part2 {
+      background-color: #fefefe;
+      margin: 15% auto;
+      padding: 20px;
+      border: 1px solid #888;
+      width: 50%;
+    }
 
-@keyframes popIn {
-  0% {
-    opacity: 0;
-    transform: scale(0.8);
-  }
-  50% {
-    opacity: 0.5;
-    transform: scale(1.05);
-  }
-  100% {
-    opacity: 1;
-    transform: scale(1);
-  }
-}
+    .modal-part2 {
+      display: none;
+      position: fixed;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgb(0, 0, 0);
+      background-color: rgba(0, 0, 0, 0.4);
+      z-index: 9999;
+    }
+
+    .close-part2 {
+      color: #aaaaaa;
+      float: right;
+      font-size: 28px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .close-part2:hover,
+    .close-part2:focus {
+      color: #000;
+      text-decoration: none;
+    }
+
+    #summaryText,
+    #statusText {
+      margin-top: 10px;
+    }
+
+    .close:hover {
+      color: #333;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+      }
+
+      to {
+        opacity: 1;
+      }
+    }
+
+    @keyframes popIn {
+      0% {
+        opacity: 0;
+        transform: scale(0.8);
+      }
+
+      50% {
+        opacity: 0.5;
+        transform: scale(1.05);
+      }
+
+      100% {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
 
     .chat-bubble-self {
-  background-color: #dcf8c6; /* Light green background for self */
-  align-self: flex-end; /* Align to the right */
-}
+      background-color: #dcf8c6;
+      /* Light green background for self */
+      align-self: flex-end;
+      /* Align to the right */
+    }
 
-  .chat-bubble-other {
-    background-color: #f1f1f1; /* Light grey background for others */
-    align-self: flex-start; /* Align to the left */
-  }
+    .chat-bubble-other {
+      background-color: #f1f1f1;
+      /* Light grey background for others */
+      align-self: flex-start;
+      /* Align to the left */
+    }
 
-  .suggestion-box {
+    .suggestion-box {
       background-color: rgb(169, 245, 126);
       /* Other styles for suggestion message box */
     }
-    
+
     .middle-ground-box {
       background-color: rgb(47, 225, 68);
       /* Other styles for middle ground message box */
     }
 
     .room-code-container {
-  position: relative; /* Establishes a new position context for absolute children */
-}
+      position: relative;
+      /* Establishes a new position context for absolute children */
+    }
 
-.copy-notification {
-  display: none; 
-  position: absolute; /* Position it relative to the room-code-container */
-  bottom: -30px; /* Position it just below the room code */
-  left: 0; /* Align to the left side of room-code-container */
-  background-color: rgba(50, 50, 50, 0.7); /* Translucent grey background */
-  padding: 8px 16px;
-  border-radius: 5px;
-  color: white;
-  text-align: center;
-  z-index: 10; /* Make sure it's on top of other elements, adjust if necessary */
-  white-space: nowrap; /* Prevent wrapping */
-  font-size: 0.875rem; /* Smaller font size */
-}
-.message-container {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 10px;
-}
+    .copy-notification {
+      display: none;
+      position: absolute;
+      /* Position it relative to the room-code-container */
+      bottom: -30px;
+      /* Position it just below the room code */
+      left: 0;
+      /* Align to the left side of room-code-container */
+      background-color: rgba(50, 50, 50, 0.7);
+      /* Translucent grey background */
+      padding: 8px 16px;
+      border-radius: 5px;
+      color: white;
+      text-align: center;
+      z-index: 10;
+      /* Make sure it's on top of other elements, adjust if necessary */
+      white-space: nowrap;
+      /* Prevent wrapping */
+      font-size: 0.875rem;
+      /* Smaller font size */
+    }
 
-.message-container.self-message .chat-bubble {
-  align-self: flex-end;
-  /* Additional self-message styles */
-}
+    .message-container {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 10px;
+    }
 
-.message-container.other-message .chat-bubble {
-  align-self: flex-start;
-  /* Additional other-message styles */
-}
+    .message-container.self-message .chat-bubble {
+      align-self: flex-end;
+      /* Additional self-message styles */
+    }
 
-.user-name {
-  font-weight: bold;
-  margin-bottom: 2px; /* Space between the name and the chat bubble */
-}
+    .message-container.other-message .chat-bubble {
+      align-self: flex-start;
+      /* Additional other-message styles */
+    }
 
-/* For bubbles aligned to the right (self messages) */
-.message-container.self-message .user-name {
-  text-align: right;
-  align-self: flex-end;
-}
+    .user-name {
+      font-weight: bold;
+      margin-bottom: 2px;
+      /* Space between the name and the chat bubble */
+    }
 
-/* For bubbles aligned to the left (other messages) */
-.message-container.other-message .user-name {
-  text-align: left;
-  align-self: flex-start;
-}
+    /* For bubbles aligned to the right (self messages) */
+    .message-container.self-message .user-name {
+      text-align: right;
+      align-self: flex-end;
+    }
 
-.chat-bubble-self, .chat-bubble-other {
-  /* Your existing styles for chat bubbles */
-  padding: 10px;
-  border-radius: 16px;
-  max-width: 80%;
-  /* Additional styles as needed */
-}
+    /* For bubbles aligned to the left (other messages) */
+    .message-container.other-message .user-name {
+      text-align: left;
+      align-self: flex-start;
+    }
 
-
+    .chat-bubble-self,
+    .chat-bubble-other {
+      /* Your existing styles for chat bubbles */
+      padding: 10px;
+      border-radius: 16px;
+      max-width: 80%;
+      /* Additional styles as needed */
+    }
   </style>
 </head>
 
@@ -1509,7 +1617,8 @@ button.send-button {
         <h2>Join a negotiation</h2>
       </div>
       <div class="modal-body">
-        <p>To join the negotiation, enter the following code into the chatroom. This is a unique code that you can only use once.</p>
+        <p>To join the negotiation, enter the following code into the chatroom. This is a unique code that you can only
+          use once.</p>
         <div class="code-container">
           {% for char in code %}
           <span class="code-block">{{ char }}</span>
@@ -1519,16 +1628,23 @@ button.send-button {
         <button id="copyButton" class="modal-btn">Copy code</button>
         <button class="modal-btn close-btn" class="closeBtn" onclick="closeModal()">Close</button>
         <a id="whatsappLink" href="javascript:void(0)" onclick="sendWhatsAppMessage()">
-          <img src="./static/icons8-whatsapp-50.png" alt="whatsapp" style="height: 50px; width: 50px; margin-bottom: -15px; margin-right: 10px;">
+          <img src="./static/icons8-whatsapp-50.png" alt="whatsapp"
+            style="height: 50px; width: 50px; margin-bottom: -15px; margin-right: 10px;">
         </a>
       </div>
       <div class="modal-footer">
       </div>
     </div>
   </div>
-  
-  
-  
+  <div id="summaryModal" class="modal-part2">
+    <div class="modal-content-part2">
+      <span class="close-part2">&times;</span>
+      <h2>Conversation Summary</h2>
+      <p id="summaryText">Loading...</p>
+      <p id="statusText"></p>
+    </div>
+  </div>
+
   <!-- <div class="message-box">
     <h2>Chat Room: {{code}}</h2>
   </div> -->
@@ -1538,20 +1654,20 @@ button.send-button {
       <div class="room-code">Room Code</div>
       <div class="room-code-container">
         <div class="room-code-value" style="width: 90%;">
-        {{code}} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy" viewBox="0 0 16 16" onclick="copyCodeToClipboard()" style="cursor: pointer;">
-          <path fill-rule="evenodd" d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z"/>
-        </svg>
+          {{code}} <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-copy"
+            viewBox="0 0 16 16" onclick="copyCodeToClipboard()" style="cursor: pointer;">
+            <path fill-rule="evenodd"
+              d="M4 2a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2zm2-1a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V2a1 1 0 0 0-1-1zM2 5a1 1 0 0 0-1 1v8a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1v-1h1v1a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h1v1z" />
+          </svg>
+        </div>
+        <div id="copy-notification" class="copy-notification">Code copied to clipboard!</div>
       </div>
-      <div id="copy-notification" class="copy-notification">Code copied to clipboard!</div>
-    </div>
-
-
       <div class="assistant-message-area">
         <!-- Assistant messages go here -->
       </div>
     </div>
     <!-- Continue with the rest of your page -->
-    
+
     <div class="neg-room">
       <nav>
         <div class="heading">
@@ -1565,6 +1681,7 @@ button.send-button {
           <div class="input_area">
             <input type="text" id="message" name="message" placeholder="Type your message here...">
             <button class="send-button" type="submit" onclick="sendMessage()">Send</button>
+            <button id="endConvoButton" , class="end-convo" type="submit">End Chat</button>
           </div>
         </div>
       </div>
@@ -1595,134 +1712,134 @@ button.send-button {
     };
 
     console.log(messages)
-  
-  function getCookie(name) {
-    var nameEQ = name + "=";
-    var ca = document.cookie.split(';');
-    for(var i=0;i < ca.length;i++) {
+
+    function getCookie(name) {
+      var nameEQ = name + "=";
+      var ca = document.cookie.split(';');
+      for (var i = 0; i < ca.length; i++) {
         var c = ca[i];
-        while (c.charAt(0)==' ') c = c.substring(1,c.length);
-        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length,c.length);
+        while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+        if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+      }
+      return null;
     }
-    return null;
-}
-  
-function sendWhatsAppMessage() {
-    var phoneNumber = prompt("Please enter your phone number (including country code):");
-    if (phoneNumber) {
+
+    function sendWhatsAppMessage() {
+      var phoneNumber = prompt("Please enter your phone number (including country code):");
+      if (phoneNumber) {
         var currentUrl = window.location.href;
         var message = "Join the negotiation with this code: {{code}}. Link: " + currentUrl;
         var whatsappLink = "whatsapp://send?text=" + encodeURIComponent(message) + "&phone=+91" + encodeURIComponent(phoneNumber);
         document.getElementById("whatsappLink").setAttribute("href", whatsappLink);
         window.location.href = whatsappLink; // Open WhatsApp
+      }
     }
-}
 
-function createUserMessage(name, msg) {
-  var chatbox = document.getElementById("chatbox");
-  
-  // Create container for entire message block
-  var messageContainer = document.createElement("div");
-  messageContainer.classList.add("message-container");
+    function createUserMessage(name, msg) {
+      var chatbox = document.getElementById("chatbox");
 
-  // Create element for user name
-  var userNameElement = document.createElement("div");
-  userNameElement.classList.add("user-name");
-  userNameElement.textContent = name;
-  messageContainer.appendChild(userNameElement); // Append the name to the container
+      // Create container for entire message block
+      var messageContainer = document.createElement("div");
+      messageContainer.classList.add("message-container");
 
-  // Create chat bubble for the message
-  var messageElement = document.createElement("div");
-  messageElement.classList.add("chat-bubble");
-  
-  // Compare the name from the cookie to the name passed to the function
-  var currentUserName = getCookie('name');
-  if (name.toLowerCase() === currentUserName.toLowerCase()) {
-      messageElement.classList.add("chat-bubble-self");
-      messageContainer.classList.add("self-message"); // Additional class for styling
-  } else {
-      messageElement.classList.add("chat-bubble-other");
-      messageContainer.classList.add("other-message"); // Additional class for styling
-  }
+      // Create element for user name
+      var userNameElement = document.createElement("div");
+      userNameElement.classList.add("user-name");
+      userNameElement.textContent = name;
+      messageContainer.appendChild(userNameElement); // Append the name to the container
 
-  messageElement.textContent = msg; // Add the text content to the bubble
-  messageContainer.appendChild(messageElement); // Append the bubble to the container
+      // Create chat bubble for the message
+      var messageElement = document.createElement("div");
+      messageElement.classList.add("chat-bubble");
 
-  chatbox.appendChild(messageContainer); // Append the entire message block to the chatbox
+      // Compare the name from the cookie to the name passed to the function
+      var currentUserName = getCookie('name');
+      if (name.toLowerCase() === currentUserName.toLowerCase()) {
+        messageElement.classList.add("chat-bubble-self");
+        messageContainer.classList.add("self-message"); // Additional class for styling
+      } else {
+        messageElement.classList.add("chat-bubble-other");
+        messageContainer.classList.add("other-message"); // Additional class for styling
+      }
 
-  // Scroll to the bottom of the chatbox each time a new message is added
-  chatbox.scrollTop = chatbox.scrollHeight;
-}
+      messageElement.textContent = msg; // Add the text content to the bubble
+      messageContainer.appendChild(messageElement); // Append the bubble to the container
 
+      chatbox.appendChild(messageContainer); // Append the entire message block to the chatbox
 
-  function copyCodeToClipboard() {
-  const roomCode = document.querySelector('.room-code-value').textContent.trim();
-  navigator.clipboard.writeText(roomCode)
-    .then(() => {
-      // Display the notification
-      const notification = document.getElementById('copy-notification');
-      notification.style.display = 'block';
-      
-      // Hide the notification after 3 seconds
-      setTimeout(() => {
-        notification.style.display = 'none';
-      }, 3000);
-      
-      console.log('Code copied to clipboard!');
-    })
-    .catch(err => {
-      console.error('Error copying text to clipboard: ', err);
-    });
-}
+      // Scroll to the bottom of the chatbox each time a new message is added
+      chatbox.scrollTop = chatbox.scrollHeight;
+    }
 
 
+    function copyCodeToClipboard() {
+      const roomCode = document.querySelector('.room-code-value').textContent.trim();
+      navigator.clipboard.writeText(roomCode)
+        .then(() => {
+          // Display the notification
+          const notification = document.getElementById('copy-notification');
+          notification.style.display = 'block';
 
-  function createSystemMessage(msg, messageType) {
-  var assistantDiv = document.querySelector(".assistant-message-area");
-  
-  // Define unique IDs for different message types
-  var messageElementId = messageType === 'suggestion' ? 'assistant-suggestion-message' : 'assistant-middle-ground-message';
+          // Hide the notification after 3 seconds
+          setTimeout(() => {
+            notification.style.display = 'none';
+          }, 3000);
 
-  // Define classes for different message types
-  var messageElementClass = messageType === 'suggestion' ? 'suggestion-box' : 'middle-ground-box';
-  
-  // Check if the message element already exists
-  var existingMessageElement = document.getElementById(messageElementId);
-  
-  // Create a new message element or clear the existing one
-  var messageElement;
-  if (existingMessageElement) {
-      messageElement = existingMessageElement;
-      messageElement.innerHTML = `<strong>Assistant</strong>: `; // Clear existing content
-      messageElement.className = `chat-bubble ${messageElementClass}`; // Reset the class
-  } else {
-      messageElement = document.createElement("div");
-      messageElement.id = messageElementId; // Assign the unique ID
-      messageElement.className = `chat-bubble ${messageElementClass}`; // Assign the class
-      messageElement.innerHTML = `<strong>Assistant</strong>: `;
-      messageElement.style.width = '100%'
-      assistantDiv.appendChild(messageElement);
-  }
+          console.log('Code copied to clipboard!');
+        })
+        .catch(err => {
+          console.error('Error copying text to clipboard: ', err);
+        });
+    }
 
-  // Stream the message word by word
-  streamMessage(msg, messageElement);
-}
 
-function streamMessage(message, element) {
-  element.innerHTML = message; 
-}
 
-// Adjust your socket.io message event listener
-socketio.on("message", (data) => {
-    if (data.name === "System") {
+    function createSystemMessage(msg, messageType) {
+      var assistantDiv = document.querySelector(".assistant-message-area");
+
+      // Define unique IDs for different message types
+      var messageElementId = messageType === 'suggestion' ? 'assistant-suggestion-message' : 'assistant-middle-ground-message';
+
+      // Define classes for different message types
+      var messageElementClass = messageType === 'suggestion' ? 'suggestion-box' : 'middle-ground-box';
+
+      // Check if the message element already exists
+      var existingMessageElement = document.getElementById(messageElementId);
+
+      // Create a new message element or clear the existing one
+      var messageElement;
+      if (existingMessageElement) {
+        messageElement = existingMessageElement;
+        messageElement.innerHTML = `<strong>Assistant</strong>: `; // Clear existing content
+        messageElement.className = `chat-bubble ${messageElementClass}`; // Reset the class
+      } else {
+        messageElement = document.createElement("div");
+        messageElement.id = messageElementId; // Assign the unique ID
+        messageElement.className = `chat-bubble ${messageElementClass}`; // Assign the class
+        messageElement.innerHTML = `<strong>Assistant</strong>: `;
+        messageElement.style.width = '100%'
+        assistantDiv.appendChild(messageElement);
+      }
+
+      // Stream the message word by word
+      streamMessage(msg, messageElement);
+    }
+
+    function streamMessage(message, element) {
+      element.innerHTML = message;
+    }
+
+    // Adjust your socket.io message event listener
+    socketio.on("message", (data) => {
+      if (data.name === "System") {
         createSystemMessage(data.message, data.messageType);
-    } else {
+      } else {
         createUserMessage(data.name, data.message);
-    }
-    console.log("Message received and displayed");
-});
+      }
+      console.log("Message received and displayed");
+    });
 
-const sendMessage = () => {
+    const sendMessage = () => {
       const message = document.querySelector("#message");
       console.log(message)
       if (message.value == "") return;
@@ -1740,13 +1857,13 @@ const sendMessage = () => {
   {% endfor %}
   <script>
     console.log("starting shivam js")
-  
+
     // Check if the darkMode cookie is set to true
     var darkMode = getCookie('darkMode');
     if (darkMode === "true") {
-        document.body.classList.add("dark-mode");
+      document.body.classList.add("dark-mode");
     } else {
-        document.body.classList.remove("dark-mode");
+      document.body.classList.remove("dark-mode");
     }
 
     document.querySelector('.send-button').addEventListener('click', function () {
@@ -1756,7 +1873,7 @@ const sendMessage = () => {
         input.value = ''; // Clear the input field
       }
     });
-    function closeModal(){
+    function closeModal() {
       var modal = document.getElementById('myModal');
       modal.style.display = 'none'
     }
@@ -1773,7 +1890,7 @@ const sendMessage = () => {
       // Get the copy button
       var copyBtn = document.getElementById('copyButton');
 
-      
+
 
       // When the user clicks anywhere outside of the modal, close it
       window.addEventListener('click', function (event) {
@@ -1786,10 +1903,10 @@ const sendMessage = () => {
       var darkMode = getCookie('darkMode');
       var modal = document.getElementById('myModal');
       if (darkMode === "true") {
-          modal.classList.add("dark-mode"); // Add dark-mode class to the modal
+        modal.classList.add("dark-mode"); // Add dark-mode class to the modal
       } else {
-          modal.classList.remove("dark-mode"); // Remove dark-mode class from the modal
-      }   
+        modal.classList.remove("dark-mode"); // Remove dark-mode class from the modal
+      }
 
       // Copy text function
       copyBtn.addEventListener('click', function () {
@@ -1801,8 +1918,37 @@ const sendMessage = () => {
       });
     });
 
+    const modalpart2 = document.getElementById('summaryModal');
+    const closeSpan = document.getElementsByClassName("close-part2")[0];
 
-    
+    document.getElementById('endConvoButton').addEventListener('click', function () {
+      socketio.emit('end_conversation');
+    });
+
+    socketio.on('summary_result', function (data) {
+      // Ensure the modal contents are updated based on the received data structure
+      document.getElementById('summaryText').textContent = "Summary: " + data.message.summary;
+      document.getElementById('statusText').textContent = "Status: " + data.message.status;
+      modalpart2.style.display = "block";
+    });
+
+    socketio.on('summary_error', function (data) {
+      // Handle any errors that might be received
+      document.getElementById('summaryText').textContent = "Error loading summary.";
+      document.getElementById('statusText').textContent = "";
+      modalpart2.style.display = "block";
+    });
+
+    closeSpan.onclick = function () {
+      modalpart2.style.display = "none";
+    };
+
+    window.onclick = function (event) {
+      if (event.target === modal) {
+        modalpart2.style.display = "none";
+      }
+    };
+
   </script>
 </body>
 
