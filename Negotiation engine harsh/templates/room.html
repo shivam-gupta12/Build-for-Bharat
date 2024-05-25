@@ -508,6 +508,73 @@ button.send-button {
   /* Additional styles as needed */
 }
 
+/* Add to your existing CSS */
+
+.pdf-upload-label {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.pdf-upload-label i {
+  font-size: 24px;
+  color: #007bff;
+  margin-right: 5px;
+}
+
+.pdf-upload-label input[type="file"] {
+  display: none;
+}
+
+.pdf-upload-label:hover i {
+  color: #0056b3;
+}
+.pdf-card {
+  background-color: #40444B; /* Dark gray background */
+  color: white; /* White text color for contrast */
+  border-radius: 10px; /* Rounded corners */
+  padding: 15px;
+  margin-top: 20px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Slightly lighter shadow */
+  display: flex; /* Using flex to better align items */
+  align-items: center; /* Center align items */
+  justify-content: space-between; /* Space between icon and text/link */
+}
+
+.pdf-card-body {
+  display: flex;
+  flex-direction: row; /* Row direction for side-by-side icon and text */
+  align-items: center;
+  width: 100%; /* Full width of the card */
+}
+
+.pdf-card-title {
+  font-size: 16px; /* Adjusted font size */
+  font-weight: bold; /* Bold font for title */
+  margin-right: 10px; /* Space between the title and the icon */
+  flex-grow: 1; /* Allow title to take up available space */
+  white-space: nowrap; /* Prevent text from wrapping to next line */
+  overflow: hidden; /* Hide overflow text */
+  text-overflow: ellipsis; /* Show ellipsis (...) for overflow text */
+}
+
+.pdf-card-icon {
+  font-size: 24px; /* Icon size */
+  color: #FF5733; /* Icon color (example) */
+  margin-right: 10px; /* Space between icon and title */
+}
+
+.pdf-card-link {
+  color: #007bff; /* Link color */
+  text-decoration: none; /* No underline */
+  margin-left: auto; /* Push to the far right */
+}
+
+.pdf-card-link:hover {
+  text-decoration: underline; /* Underline on hover */
+}
+
 
   </style>
 </head>
@@ -559,6 +626,8 @@ button.send-button {
 
       <div class="assistant-message-area">
         <!-- Assistant messages go here -->
+        <div id="pdf-preview-container"></div>
+        
       </div>
     </div>
     <!-- Continue with the rest of your page -->
@@ -575,6 +644,10 @@ button.send-button {
         <div class="first-chat-input">
           <div class="input_area">
             <input type="text" id="message" name="message" placeholder="Type your message here...">
+            <label for="pdfUpload" class="pdf-upload-label">
+              <i class="bi bi-file-earmark-pdf"></i>
+              <input type="file" id="pdfUpload" name="pdfUpload" accept="application/pdf" style="display: none;" onchange="handleFileUpload(event)">
+            </label>
             <button class="send-button" type="submit" onclick="sendMessage()">Send</button>
           </div>
         </div>
@@ -824,6 +897,51 @@ const sendMessage = () => {
       });
     });
     
+    function handleFileUpload(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+  
+      const formData = new FormData();
+      formData.append('pdf', file);
+  
+      fetch('/upload', {
+          method: 'POST',
+          body: formData
+      })
+      .then(response => response.json())
+      .then(data => {
+          if (data.success) {
+              console.log('File uploaded successfully');
+              displayPDFPreview(data.filepath, file.name);  // Display the PDF card
+          } else {
+              console.error('Upload failed:', data.error);
+          }
+      })
+      .catch(error => {
+          console.error('Error uploading file:', error);
+      });
+  }
+  
+    
+    function displayPDFPreview(filePath, fileName) {
+      const pdfPreviewContainer = document.getElementById('pdf-preview-container');
+      if (!pdfPreviewContainer) return; // Exit if the container isn't present
+  
+      // Clear previous content
+      pdfPreviewContainer.innerHTML = '';
+  
+      const pdfCard = document.createElement('div');
+      pdfCard.className = 'pdf-card';
+      pdfCard.innerHTML = `
+          <div class="pdf-card-body">
+              <i class="bi bi-file-earmark-pdf-fill pdf-card-icon"></i>
+              <div class="pdf-card-title" title="${fileName}">${fileName}</div>
+              <a href="${filePath}" target="_blank" class="pdf-card-link">Open PDF</a>
+          </div>
+      `;
+      pdfPreviewContainer.appendChild(pdfCard);
+  }
+  
     
   </script>
 </body>
