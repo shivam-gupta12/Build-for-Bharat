@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Negotiation Room</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+  <div class="page">
+    <div class="assistant">
+      <p>Your Assistant</p>
+    </div>
+    <div class="neg-room">
+      {% extends 'Negotiation engine harsh/templates/home.html' %} {% block content %}
+      <div class="message-box">
+        <h2>Chat Room: {{code}}</h2>
+        <div class="messages" id="messages"></div>
+        <div class="inputs">
+          <input type="text" rows="3" placeholder="Message" name="message" id="message" />
+          <button type="button" name="send" id="send-btn" onClick="sendMessage()">
+            Send
+          </button>
+        </div>
+      </div>
+      </div>
+      <!-- <script type="text/javascript">
+        var socketio = io();
+
+        const messages = document.getElementById("messages");
+
+        const createMessage = (name, msg) => {
+          const content = `
+    <div class="text">
+        <span>
+            <strong>${name}</strong>: ${msg}
+        </span>
+        <span class="muted">
+            ${new Date().toLocaleString()}
+        </span>
+    </div>
+    `;
+          messages.innerHTML += content;
+        };
+
+        socketio.on("message", (data) => {
+          createMessage(data.name, data.message);
+        });
+
+        const sendMessage = () => {
+          const message = document.getElementById("message");
+          if (message.value == "") return;
+          socketio.emit("message", { data: message.value });
+          message.value = "";
+        };
+      </script>
+      {% for msg in messages %}
+      <script type="text/javascript">
+        createMessage("{{msg.name}}", "{{msg.message}}");
+      </script>
+      {% endfor %} {% endblock %} -->
+      <nav>
+        <div class="heading">
+          <p>The Negotiation Room</p>
+        </div>
+        <div class="theme-switch-wrapper">
+          <label class="theme-switch" for="checkbox">
+            <input type="checkbox" id="checkbox" />
+            <div class="slider round"></div>
+          </label>
+        </div>
+      </nav>
+      <div class="chat-container">
+        <div id="chatbox">
+        </div>
+        <div class="first-chat-input">
+          <div class="input_area">
+            <input type="text" id="user_input" placeholder="Type your message here...">
+            <button class="send-button" type="submit">Send</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <nav>
+  </div>
+  <script src="script.js"></script>
+</body>
+
+</html>
+</head>

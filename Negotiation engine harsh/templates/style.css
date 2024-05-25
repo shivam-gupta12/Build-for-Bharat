@@ -1,0 +1,172 @@
+.page{
+    display: flex;
+    flex-direction: row;
+    margin: 0;
+    padding: 0;
+}
+
+.assistant{
+    width: 40vw;
+    height: 100vh;
+    border-right: 2px solid black;
+}
+
+.neg-room{
+    width: 60vw;
+    height: 100vh;
+}
+
+.heading{
+    text-align: center;
+    margin: 0;
+    margin-right: 20px;
+}
+
+p{
+    text-align: center;
+}
+
+nav{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+img{
+    height: 10px;
+    width: 20px;
+}
+
+.first-chat-input{
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    margin: 10px;
+    padding: 10px;
+}
+
+input{
+    border: 2px solid rgb(232, 226, 226);
+    border-radius: 2px;
+}
+
+  
+body {
+    transition: background-color 0.5s ease;
+    background-color: white;
+    color: black;
+    margin: 0;
+    padding: 0;
+}
+
+body.dark-mode {
+    background-color: #333;
+    color: white;
+}
+
+.theme-switch-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 10px; /* Reduced margin for a more compact layout */
+}
+
+.theme-switch {
+    display: inline-block;
+    height: 7px; /* Reduced height */
+    position: relative;
+    width: 12.5px; /* Reduced width */
+}
+
+.theme-switch input {
+    display:none;
+}
+
+.slider {
+    background-color: #ccc;
+    bottom: 0;
+    cursor: pointer;
+    left: 0;
+    position: absolute;
+    right: 0;
+    top: 0;
+    transition: .4s;
+}
+
+.slider:before {
+    background-color: white;
+    background-image: url("https://static.vecteezy.com/system/resources/previews/019/806/320/non_2x/moon-graphic-clipart-design-free-png.png");
+    bottom: 1px; /* Adjusted for reduced height */
+    content: "";
+    height: 5px; /* Adjusted for reduced height */
+    left: 1px; /* Adjusted for consistency */
+    position: absolute;
+    transition: .4s;
+    width: 5px; /* Adjusted for reduced width */
+}
+
+input:checked + .slider {
+    background-color: #000000;
+}
+
+input:checked + .slider:before {
+    transform: translateX(6px); /* Adjusted for the new slider width */
+}
+
+.slider.round {
+    border-radius: 34px;
+}
+
+.slider.round:before {
+    border-radius: 50%;
+}
+
+input{
+    width: 150px;
+}
+
+#chatbox {
+    padding: 10px;
+    height: 170px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column; /* Newest messages at the bottom */
+}
+  
+.chat-bubble {
+    background-color: #f1f1f1;
+    border-radius: 16px;
+    padding: 10px 15px;
+    color: #333;
+    margin: 5px;
+    max-width: 80%;
+    word-wrap: break-word;
+    align-self: flex-end; /* Align to the right */
+}
+
+.input-area {
+    display: flex;
+}
+  
+.user-input {
+    flex-grow: 1;
+    padding: 10px;
+    margin-right: 5px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+  }
+  
+.send-button {
+    padding: 3px 10px;
+    border-radius: 4px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
+  #send-button:hover {
+    background-color: #0056b3;
+  }
+  
+  
