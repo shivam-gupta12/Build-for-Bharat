@@ -1,5 +1,8 @@
 flask
 flask-socketio
-google.generativeai
-inspect
+eventlet
+gunicorn
+torch
 transformers
+google.generativeai
+markdown
