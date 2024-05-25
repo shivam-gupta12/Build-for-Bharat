@@ -1040,4 +1040,4 @@ def end_conversation():
             emit('summary_error', {"error": str(e)}, room=room)
 
 if __name__ == "__main__":
-    socketio.run(app,port=8080, debug=True)
+    socketio.run(app,port=8080)
