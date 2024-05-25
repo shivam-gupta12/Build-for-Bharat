@@ -6,3 +6,4 @@ torch
 transformers
 google.generativeai
 markdown
+pypdf2
