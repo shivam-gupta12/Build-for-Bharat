@@ -1087,6 +1087,12 @@ const sendMessage = () => {
       color: #FFF;
     }
 
+    body.dark-mode .modal-content-part2 {
+      background-color: #2A2C31;
+      color: #FFF;
+    }
+
+
     body.dark-mode .code-block {
       background-color: #40444B;
       color: #FFF;
@@ -1438,8 +1444,6 @@ const sendMessage = () => {
       width: 100%;
       height: 100%;
       overflow: auto;
-      background-color: rgb(0, 0, 0);
-      background-color: rgba(0, 0, 0, 0.4);
     }
 
     .modal-content-part2 {
@@ -1458,8 +1462,6 @@ const sendMessage = () => {
       width: 100%;
       height: 100%;
       overflow: auto;
-      background-color: rgb(0, 0, 0);
-      background-color: rgba(0, 0, 0, 0.4);
       z-index: 9999;
     }
 
@@ -1675,6 +1677,27 @@ const sendMessage = () => {
       /* Show ellipsis (...) for overflow text */
     }
 
+    .modal-buttons {
+      margin-top: 20px;
+      text-align: center;
+    }
+
+    .modal-buttons button {
+      padding: 10px 20px;
+      margin: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      background-color: #007BFF;
+      color: white;
+      border: none;
+      border-radius: 5px;
+    }
+
+    .modal-buttons button:hover {
+      background-color: #0056b3;
+    }
+
+
     .pdf-card-icon {
       font-size: 24px;
       /* Icon size */
@@ -1729,10 +1752,13 @@ const sendMessage = () => {
   </div>
   <div id="summaryModal" class="modal-part2">
     <div class="modal-content-part2">
-      <span class="close-part2">&times;</span>
       <h2>Conversation Summary</h2>
       <p id="summaryText">Loading...</p>
       <p id="statusText"></p>
+      <div class="modal-buttons">
+        <button id="endConversationBtn">End Conversation</button>
+        <button class="close-part2" id="continueConversationBtn">Continue Conversation</button>
+      </div>
     </div>
   </div>
 
@@ -2103,6 +2129,28 @@ const sendMessage = () => {
         modalpart2.style.display = "none";
       }
     };
+
+    const endConversationBtn = document.getElementById('endConversationBtn');
+
+
+    // Event listener for ending the conversation
+    endConversationBtn.addEventListener('click', function () {
+      modalpart2.style.display = "none";  // Close the modal
+      window.location.href = '/';  // Redirect to home.html
+    });
+
+    // Close the modal with the close button
+    closeSpan.onclick = function () {
+      modalpart2.style.display = "none";
+    };
+
+    // Close the modal by clicking outside of it
+    window.onclick = function (event) {
+      if (event.target === modalpart2) {
+        modalpart2.style.display = "none";
+      }
+    };
+
 
   </script>
 </body>
