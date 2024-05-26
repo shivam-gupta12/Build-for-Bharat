@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, url_for, copy_current_request_context
+from flask import Flask, render_template, request, session, redirect, url_for, copy_current_request_context, jsonify, send_from_directory
 from flask_socketio import join_room, leave_room, send, SocketIO
 import random
 import torch
@@ -7,15 +7,22 @@ from transformers import BertTokenizer, BertForSequenceClassification
 import google.generativeai as genai 
 import string
 from threading import Thread
-from report_generate import generate_pdf_report
+import os
+from werkzeug.utils import secure_filename
+from PyPDF2 import PdfReader
+import uuid
 
 print('app starting')
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "hjhjsdahhds"
+app.config["UPLOAD_FOLDER"] = "uploads"
 socketio = SocketIO(app, cors_allowed_origins="*", engineio_logger=True, logger=True, async_mode='eventlet')
 
 
+if not os.path.exists(app.config["UPLOAD_FOLDER"]):
+    os.makedirs(app.config["UPLOAD_FOLDER"])
+    
 rooms = {}
 
 def generate_unique_code(length):
@@ -68,6 +75,41 @@ def room():
         return redirect(url_for("home"))
 
     return render_template("room.html", code=room, messages=rooms[room]["messages"])
+
+room_data = {}
+
+@app.route("/upload", methods=["POST"])
+def upload_file():
+    if 'pdf' not in request.files:
+        return jsonify({"error": "No file part"}), 400
+
+    file = request.files['pdf']
+    if file.filename == '':
+        return jsonify({"error": "No selected file"}), 400
+
+    if file and file.filename.endswith('.pdf'):
+        filename = secure_filename(file.filename)
+        filepath = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+        file.save(filepath)
+
+        try:
+            reader = PdfReader(filepath)
+            text = ''.join(page.extract_text() + ' ' for page in reader.pages if page.extract_text())
+
+            # Save the extracted text associated with the room
+            room = session.get("room")
+            room_data[room] = text.strip()  # Save extracted text to global dictionary
+        except Exception as e:
+            return jsonify({"error": "Failed to read PDF: " + str(e)}), 500
+
+        return jsonify({"success": "File successfully uploaded", "filepath": url_for('uploaded_file', filename=filename)}), 200
+    else:
+        return jsonify({"error": "Invalid file type. Only PDF files are allowed."}), 400
+
+
+@app.route('/uploads/<filename>')
+def uploaded_file(filename):
+    return send_from_directory(app.config["UPLOAD_FOLDER"], filename)
 
 
 certainty_model_path = 'Negotiation engine harsh/models/certainty_prediction_model'
@@ -261,7 +303,6 @@ def to_html(markdown_text):
     return left_aligned_html
 
 
-
 def generate_middle_ground(user_messages, room):
     print('middle ground function has been called')
     genai.configure(api_key="AIzaSyCHhvLttGJJynPDImQ3NGkxb4d7PTD4hKI")
@@ -269,6 +310,13 @@ def generate_middle_ground(user_messages, room):
     
     # Combine user messages into a single string for analysis
     combined_terms = '\n\n'.join(user_messages)
+
+    pdf_text = room_data.get(room, '')
+
+    if pdf_text:
+        print("pdf text found")
+        combined_terms = pdf_text + '\n\n' + combined_terms
+    
     
     prompt = f"""
         Given a negotiation between a seller and a buyer, we aim to mediate and find a mutually beneficial compromise based solely on the terms provided by each party. Before intervening, it's crucial to determine if enough information has been shared to propose a meaningful compromise.
@@ -280,14 +328,13 @@ def generate_middle_ground(user_messages, room):
         Based on the information provided:
         1. If there are sufficient terms from both parties, analyze the terms presented by both the seller and the buyer and find the key differences and potential areas for compromise. If not enough terms, just respond with "No comment".
         2. Respond with a new set of terms that strictly incorporate elements from both parties' preferences, considering constraints such as price and additional features. 
-        3. The output should  be proposed compromise which should be concise, unbiased and strictly derived from the provided terms of both parties, without introducing suggestions outside their stated terms.
+        3. The output should be a proposed compromise which should be concise, unbiased, and strictly derived from the provided terms of both parties, without introducing suggestions outside their stated terms.
 
         Proposed Compromise or Silence if Insufficient Information:
         
         output:
-        give only the proprosed compromise as the output the user doesnt need to see all the decisions you make 
+        give only the proposed compromise as the output the user doesn't need to see all the decisions you make 
         """
-
 
     # Assuming genai and model are configured as shown earlier
     config = {
@@ -301,6 +348,8 @@ def generate_middle_ground(user_messages, room):
         send({"name": "System", "message": formatted_response, "messageType": "middle-ground"}, to=room, html=True)
     else:
         print('not enough information')
+
+
 
 def format_response_as_html(text):
     """
