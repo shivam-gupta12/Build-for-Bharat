@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, session, redirect, url_for, copy_current_request_context, send_from_directory
+from flask import Flask, render_template, request, session, redirect, url_for, copy_current_request_context, send_from_directory, abort
 from flask_socketio import join_room, leave_room, send, SocketIO
 import random
 import torch
@@ -22,7 +22,7 @@ print('app starting')
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "hjhjsdahhds"
-app.config["UPLOAD_FOLDER"] = "uploads"
+app.config["UPLOAD_FOLDER"] = "/Users/damodargupta/Desktop/NEGOTIATION ENGINE/uploads"
 socketio = SocketIO(app, cors_allowed_origins="*", engineio_logger=True, logger=True, async_mode='eventlet')
 
 
@@ -31,6 +31,7 @@ if not os.path.exists(app.config["UPLOAD_FOLDER"]):
     
 rooms = {}
 
+last_proposed_compromise = ""
 def generate_unique_code(length):
     while True:
         characters = string.ascii_letters + string.digits
@@ -73,6 +74,12 @@ def new_func():
     new_var = room = generate_unique_code(10)
     return room,new_var
 
+@app.route('/fetch-report/<filename>')
+def fetch_report(filename):
+    # Ensure that the directory does not traverse to subdirectories
+    if ".." in filename or filename.startswith("/"):
+        return "Invalid file path", 400
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename)
 
 @app.route("/room")
 def room():
@@ -246,7 +253,7 @@ def generate_and_send_suggestion(user_messages, room, user):
     conversation_context = " ".join(user_messages[:-1]) if len(user_messages) > 1 else "The conversation has focused primarily on price negotiations."
     non_negotiable_statement = user_messages[-1]
     
-    genai.configure(api_key="AIzaSyCHhvLttGJJynPDImQ3NGkxb4d7PTD4hKI")
+    genai.configure(api_key="AIzaSyCzRrKO-krrIN0YfSgmj_MQJ9nqnXLFLdI")
     model = genai.GenerativeModel('gemini-pro')
 
     prompt = f"""
@@ -309,6 +316,7 @@ def to_html(markdown_text):
 
 
 def generate_middle_ground(user_messages, room):
+    global last_proposed_compromise
     print('middle ground function has been called')
     genai.configure(api_key="AIzaSyCHhvLttGJJynPDImQ3NGkxb4d7PTD4hKI")
     model = genai.GenerativeModel('gemini-pro')
@@ -318,27 +326,22 @@ def generate_middle_ground(user_messages, room):
 
     pdf_text = room_data.get(room, '')
 
-    if pdf_text:
-        print("pdf text found")
-        combined_terms = pdf_text + '\n\n' + combined_terms
-    
-    
     prompt = f"""
-        Given a negotiation between a seller and a buyer, we aim to mediate and find a mutually beneficial compromise based solely on the terms provided by each party. Before intervening, it's crucial to determine if enough information has been shared to propose a meaningful compromise.
+        Given a negotiation between a seller and a buyer, we aim to mediate and find a mutually beneficial compromise based on the terms provided by each party. Here, the initial terms from a foundational PDF document and the ongoing negotiation terms need to be considered:
 
-        Seller and Buyer have provided the following terms:
+        Initial Terms from PDF (use as base):
+        {pdf_text}
 
+        New Terms Proposed During Negotiation:
         {combined_terms}
 
-        Based on the information provided:
-        1. If there are sufficient terms from both parties, analyze the terms presented by both the seller and the buyer and find the key differences and potential areas for compromise. If not enough terms, just respond with "No comment".
-        2. Respond with a new set of terms that strictly incorporate elements from both parties' preferences, considering constraints such as price and additional features. 
-        3. The output should be a proposed compromise which should be concise, unbiased, and strictly derived from the provided terms of both parties, without introducing suggestions outside their stated terms.
+        Instructions:
+        1. Analyze the initial terms and the new terms proposed during negotiation.
+        2. Identify key differences and potential areas for compromise based on both sets of terms.
+        3. Propose a compromise that strictly incorporates elements from both the initial and newly proposed terms, considering constraints such as price and additional features.
+        4. The output should be a concise, unbiased compromise, derived strictly from the provided terms.
 
-        Proposed Compromise or Silence if Insufficient Information:
-        
-        output:
-        give only the proposed compromise as the output the user doesn't need to see all the decisions you make 
+        If sufficient information is available to propose a meaningful compromise, output the compromise. If not, respond with "No comment".
         """
 
     # Assuming genai and model are configured as shown earlier
@@ -350,6 +353,7 @@ def generate_middle_ground(user_messages, room):
 
     if "No comment" not in response.text:
         formatted_response = to_html(response.text)
+        last_proposed_compromise = formatted_response
         send({"name": "System", "message": formatted_response, "messageType": "middle-ground"}, to=room, html=True)
     else:
         print('not enough information')
@@ -369,7 +373,7 @@ def summarize(user_messages, room):
     conversation_context = " ".join(user_messages[:-1]) if len(user_messages) > 1 else "The conversation has focused primarily on price negotiations."
     non_negotiable_statement = user_messages[-1]
     
-    genai.configure(api_key="AIzaSyCHhvLttGJJynPDImQ3NGkxb4d7PTD4hKI")
+    genai.configure(api_key="AIzaSyCzRrKO-krrIN0YfSgmj_MQJ9nqnXLFLdI")
     model = genai.GenerativeModel('gemini-pro')
 
     prompt = f"""
@@ -406,6 +410,7 @@ def summarize(user_messages, room):
         print(type(summary_whole))
         print(summary_whole)
         emit('summary_result', {"name": "System", "message": {"status": summary_whole["status"], "summary": summary_whole["summary"]}, "messageType": "status and summary"}, room=room)
+        return summary_whole
     except Exception as e:
         emit('summary_error', {"error": str(e)}, room=room)
     
@@ -482,9 +487,18 @@ def end_conversation():
     if room in rooms:
         try:
             all_messages = sum(rooms[room]["messages_by_user"].values(), [])
-            summarize(all_messages, room)  # the summarize function now handles SocketIO emissions
+            summary_data = summarize(all_messages, room)  # Your summarize function
+            print("summary ", summary_data)
+            print("last proposed compromise ", last_proposed_compromise)
+            report_data = {
+                **summary_data,
+                "last_proposed_compromise": last_proposed_compromise
+            }
+            report_path = f"{app.config['UPLOAD_FOLDER']}/Negotiation_Summary_Report_{uuid.uuid4().hex}.pdf"
+            generate_pdf_report(report_data, report_path)
+            emit('report_generated', {'report_url': url_for('fetch_report', filename=f"{os.path.basename(report_path)}")}, room=room)
         except Exception as e:
-            print("Error summarizing messages:", str(e))
+            print("Error during report generation:", str(e))
             emit('summary_error', {"error": str(e)}, room=room)
 
 if __name__ == "__main__":
