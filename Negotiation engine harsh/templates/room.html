@@ -1325,7 +1325,7 @@ const sendMessage = () => {
     .end-convo {
       padding: 3px 10px;
       border-radius: 4px;
-      background-color: #007bff;
+      background-color: #ff0000;
       color: white;
       border: none;
       cursor: pointer;
@@ -1337,7 +1337,7 @@ const sendMessage = () => {
     }
 
     .end-convo:hover {
-      background-color: #0056b3;
+      background-color: #520000;
     }
 
     .message-box {
@@ -1758,6 +1758,7 @@ const sendMessage = () => {
       <div class="modal-buttons">
         <button id="endConversationBtn">End Conversation</button>
         <button class="close-part2" id="continueConversationBtn">Continue Conversation</button>
+        <button id="downloadreportbtn" class="close-part2">Download Report</button>
       </div>
     </div>
   </div>
@@ -2150,6 +2151,16 @@ const sendMessage = () => {
         modalpart2.style.display = "none";
       }
     };
+
+    const downloadBtn = document.getElementById('downloadreportbtn');
+
+    // Listen for the report generated event
+    socketio.on('report_generated', function(data) {
+        downloadBtn.onclick = function() {
+            // Use the URL provided by the server to download the report
+            window.location.href = data.report_url;
+        };
+    });
 
 
   </script>
